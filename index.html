@@ -17,10 +17,35 @@
 
   <h1>Autonomous Custom Elements (Todo List)</h1>
   <todo-list disabled></todo-list>
-  <script src="./todo-list.js"></script>
 
   <h1>Customized built-in Elements (Image)</h1>
   <img is="bigger-img" width="20" height="20" src="./images/img.png"></img>
+
+  <!-- Polyfill customElements if necessary -->
+  <script>
+    const supportsCustomElementsV1 = 'customElements' in window
+
+    function loadScript(src) {
+      return new Promise(function (resolve, reject) {
+        const script = document.createElement('script')
+        script.src = src
+        script.onload = resolve
+        script.onerror = reject
+        document.head.appendChild(script)
+      })
+    }
+
+    // Lazy load the polyfill if necessary.
+    if (!supportsCustomElementsV1) {
+      loadScript('./custom-elements.min.js').then(e => {
+        console.log('Polyfill Added')
+      })
+    } else {
+      console.log('Using native window.customElements')
+    }
+  </script>
+
+  <script src="./todo-list.js"></script>
   <script src="./custom-img.js"></script>
 
 </body>
